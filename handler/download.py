@@ -2,6 +2,7 @@ import os
 
 from tornado.web import RequestHandler
 
+from block import block_index
 from settings import STORAGE_PATH
 
 
@@ -12,9 +13,10 @@ class DownloadHander(RequestHandler):
         self.set_header('Content-Type', 'application/octet-stream')
         self.set_header('Content-Disposition', 'attachment; filename=' + filename)
 
-        block_index = BlockIndex.get()
-        for block in block_index[filename]:
+        blocks = block_index.get()[filename]
+        for block in blocks:
             block_path = os.path.join(STORAGE_PATH, block)
+
             with open(block_path, "rb") as f:
                 while True:
                     data = f.read(buf_size)

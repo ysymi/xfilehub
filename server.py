@@ -16,8 +16,8 @@ def make_app():
     }
     return tornado.web.Application([
         (r'/', MainHandler),
+        (r'/upload', UploadHandler),
         (r'/download', DownloadHander),
-        (r'/upload', UploadHandler)
     ], **settings)
 
 

@@ -1,6 +1,6 @@
 from tornado.web import RequestHandler
 
-from block import block_index
+from block.block import block_index
 
 
 class MainHandler(RequestHandler):

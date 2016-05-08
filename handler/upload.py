@@ -2,8 +2,8 @@ import os
 
 from tornado.web import RequestHandler
 
-from block import block_index
-from settings import STORAGE_PATH
+from block.block import block_index
+from settings import STORAGE_DIR
 
 
 class UploadHandler(RequestHandler):
@@ -12,10 +12,10 @@ class UploadHandler(RequestHandler):
         name = self.get_body_argument("name")
         seq = self.get_body_argument("seq")
 
-        blockname = name + seq.zfill(10)
-        block_index.update(blockname)
-        file_path = os.path.join(STORAGE_PATH, blockname)
+        block_name = name + ".xb" + seq.zfill(7)
+        file_path = os.path.join(STORAGE_DIR, block_name)
         with open(file_path, "wb") as f:
             f.write(data)
 
+        block_index.update(block_name)
         self.write("ok")

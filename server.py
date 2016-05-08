@@ -3,9 +3,9 @@ import logging
 import tornado.ioloop
 import tornado.web
 
-from handler.download import DownloadHander
 from handler.main import MainHandler
 from handler.upload import UploadHandler
+from handler.download import DownloadHandler
 
 
 def make_app():
@@ -17,7 +17,7 @@ def make_app():
     return tornado.web.Application([
         (r'/', MainHandler),
         (r'/upload', UploadHandler),
-        (r'/download', DownloadHander),
+        (r'/download', DownloadHandler),
     ], **settings)
 
 

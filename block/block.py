@@ -2,16 +2,18 @@ import json
 import logging
 import os
 
-from settings import BLOCK_FILE, STORAGE_PATH
+from settings import BLOCKS_FILE, STORAGE_DIR
 
 
 class BlockIndex(object):
     def __init__(self):
-        if os.path.exists(BLOCK_FILE):
-            with open(BLOCK_FILE, 'r') as f:
+        self._block_index = {}
+        if os.path.exists(BLOCKS_FILE):
+            with open(BLOCKS_FILE, 'r') as f:
                 self._block_index = json.loads(f.read())
 
-        self.sync()
+        else:
+            self.sync()
 
     def get(self):
         if self.test():
@@ -26,7 +28,7 @@ class BlockIndex(object):
             logging.info("%s %s" % (file, blocks))
             for block in blocks:
                 logging.info(block)
-                block_path = os.path.join(STORAGE_PATH, block)
+                block_path = os.path.join(STORAGE_DIR, block)
                 if not os.path.exists(block_path):
                     return False
         return True
@@ -39,14 +41,14 @@ class BlockIndex(object):
 
     def sync(self):
         self._block_index = {}
-        block_list = os.listdir(STORAGE_PATH)
+        block_list = os.listdir(STORAGE_DIR)
         for block_name in block_list:
             self.update(block_name)
         self.save()
         return self._block_index
 
     def save(self):
-        with open(BLOCK_FILE, 'w') as f:
+        with open(BLOCKS_FILE, 'w') as f:
             f.write(json.dumps(self._block_index))
 
 

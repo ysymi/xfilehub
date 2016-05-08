@@ -1,0 +1,6 @@
+*.pyc
+.idea/
+.DS_Store
+storage
+__pycache__/
+test/tmp*

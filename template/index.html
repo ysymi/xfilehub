@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>X File Hub</title>
+    <link rel="shortcut icon" href="{{ static_url('favicon.ico') }}">
+</head>
+<body>
+<h1>X File Hub</h1>
+
+<form id="file-uploader" method="post" action="javascript:upload()">
+    <p>Upload new file:</p>
+    <p>
+        <input id="file" type="file" onchange="javascript:init()"/>
+    </p>
+    <p>
+        <input type="submit" value="submit"/>
+        <span id="percentage"></span>
+    </p>
+
+    </p>
+</form>
+<p>Here is your file:</p>
+<ul>
+    {% for file in file_list %}
+    <li>
+        <a href="/download?filename={{ escape(file) }}">{{ escape(file) }}</a>
+    </li>
+    {% end %}
+</ul>
+
+</body>
+<script type="text/javascript">
+    var BLOC_KSIZE = 4 * 1024 * 1024;
+
+    var percentage = document.getElementById("percentage");
+    var finishCount = 0;
+    var totalCount = 0;
+
+    function upload() {
+        var file = document.getElementById("file").files[0];
+        var blockCount = Math.ceil(file.size / BLOC_KSIZE);
+        var blockGroupCount = Math.ceil(blockCount / 5);
+        var blockGroupSize = blockGroupCount * BLOC_KSIZE;
+
+        finishCount = 0;
+        totalCount = blockCount;
+
+        console.log(file.size + " / " + blockGroupSize + " = " + blockCount);
+        for (var i = 0; i < 5; ++i) {
+            if (file.size < i * blockGroupSize) {
+                continue;
+            }
+
+            var uploader = new Worker(" {{ static_url('uploader.js') }}");
+            uploader.postMessage({
+                "data": file.slice(i * blockGroupSize, (i + 1) * blockGroupSize),
+                "seq": i * blockGroupCount,
+                "name": file.name
+            });
+
+            uploader.onmessage = function (message) {
+                if (message.data === 'success') {
+                    finishCount += 1;
+                    percentage.innerHTML = (finishCount / totalCount * 100).toFixed(2) + "%";
+                    if (finishCount == totalCount ){
+                        location.reload()
+                    }
+                }
+            }
+        }
+    }
+
+    function init() {
+        percentage.innerHTML = "";
+    }
+</script>
+</html>

@@ -1,10 +1,10 @@
-import os
 import logging
-import shutil
+import os
+
 from tornado.web import RequestHandler
 
 from block.block import block_index
-from settings import STORAGE_DIR,BUFFER_SIZE
+from settings import STORAGE_DIR
 
 
 class DownloadHandler(RequestHandler):
@@ -14,18 +14,11 @@ class DownloadHandler(RequestHandler):
         self.set_header('Content-Disposition', 'attachment; filename=' + filename)
 
         blocks = sorted(block_index.get()[filename])
-        tmp = open(os.path.join(STORAGE_DIR, filename), "wb")
 
         for block in blocks:
-            logging.info(block)
             block_path = os.path.join(STORAGE_DIR, block)
             with open(block_path, "rb") as f:
-                data = f.read()
-                self.write(data)
-                tmp.write(data)
+                self.write(f.read())
 
-        tmp.close()
-
-        # 记得有finish哦
         self.finish()
         pass

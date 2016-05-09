@@ -4,3 +4,4 @@
 storage/
 __pycache__/
 test/
+block/block.index

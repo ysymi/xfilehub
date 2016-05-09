@@ -37,7 +37,7 @@ class BlockIndex(object):
         if filename not in self._block_index:
             self._block_index[filename] = []
         self._block_index[filename].append(block_name)
-        self.save()  # maybe cost too much
+        self.save()  # maybe cost too much or try to solve blocks in disk but no index in mem
 
     def sync(self):
         self._block_index = {}

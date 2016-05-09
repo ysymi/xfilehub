@@ -3,9 +3,10 @@ import logging
 import tornado.ioloop
 import tornado.web
 
+from handler.download import DownloadHandler
 from handler.main import MainHandler
 from handler.upload import UploadHandler
-from handler.download import DownloadHandler
+from settings import PORT
 
 
 def make_app():
@@ -24,5 +25,5 @@ def make_app():
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
     app = make_app()
-    app.listen(5000)
+    app.listen(PORT)
     tornado.ioloop.IOLoop.current().start()

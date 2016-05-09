@@ -11,12 +11,11 @@ class BlockIndex(object):
         if os.path.exists(BLOCKS_FILE):
             with open(BLOCKS_FILE, 'r') as f:
                 self._block_index = json.loads(f.read())
-
         else:
             self.sync()
 
     def get(self):
-        if self.test():
+        if len(self._block_index) > 0 and self.test():
             return self._block_index
 
         self.sync()
@@ -38,6 +37,7 @@ class BlockIndex(object):
         if filename not in self._block_index:
             self._block_index[filename] = []
         self._block_index[filename].append(block_name)
+        self.save()  # maybe cost too much
 
     def sync(self):
         self._block_index = {}
@@ -49,7 +49,7 @@ class BlockIndex(object):
 
     def save(self):
         with open(BLOCKS_FILE, 'w') as f:
-            f.write(json.dumps(self._block_index))
+            f.write(json.dumps(self._block_index, indent=2, sort_keys=True))
 
 
 block_index = BlockIndex()

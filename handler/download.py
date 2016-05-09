@@ -1,5 +1,6 @@
 import os
-
+import logging
+import shutil
 from tornado.web import RequestHandler
 
 from block.block import block_index
@@ -12,16 +13,18 @@ class DownloadHandler(RequestHandler):
         self.set_header('Content-Type', 'application/octet-stream')
         self.set_header('Content-Disposition', 'attachment; filename=' + filename)
 
-        blocks = block_index.get()[filename]
-        for block in blocks:
-            block_path = os.path.join(STORAGE_DIR, block)
+        blocks = sorted(block_index.get()[filename])
+        tmp = open(os.path.join(STORAGE_DIR, filename), "wb")
 
+        for block in blocks:
+            logging.info(block)
+            block_path = os.path.join(STORAGE_DIR, block)
             with open(block_path, "rb") as f:
-                while True:
-                    data = f.read(BUFFER_SIZE)
-                    if not data:
-                        break
-                    self.write(data)
+                data = f.read()
+                self.write(data)
+                tmp.write(data)
+
+        tmp.close()
 
         # 记得有finish哦
         self.finish()

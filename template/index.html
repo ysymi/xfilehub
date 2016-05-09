@@ -30,7 +30,7 @@
 
 </body>
 <script type="text/javascript">
-    var BLOC_KSIZE = 4 * 1024 * 1024;
+    var BLOCK_SIZE = 4 * 1024 * 1024;
 
     var percentage = document.getElementById("percentage");
     var finishCount = 0;
@@ -38,9 +38,9 @@
 
     function upload() {
         var file = document.getElementById("file").files[0];
-        var blockCount = Math.ceil(file.size / BLOC_KSIZE);
+        var blockCount = Math.ceil(file.size / BLOCK_SIZE);
         var blockGroupCount = Math.ceil(blockCount / 5);
-        var blockGroupSize = blockGroupCount * BLOC_KSIZE;
+        var blockGroupSize = blockGroupCount * BLOCK_SIZE;
 
         finishCount = 0;
         totalCount = blockCount;

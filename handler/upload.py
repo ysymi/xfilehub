@@ -13,8 +13,8 @@ class UploadHandler(RequestHandler):
         seq = self.get_body_argument("seq")
 
         block_name = name + ".xb" + seq.zfill(7)
-        file_path = os.path.join(STORAGE_DIR, block_name)
-        with open(file_path, "wb") as f:
+        block_path = os.path.join(STORAGE_DIR, block_name)
+        with open(block_path, "wb") as f:
             f.write(data)
 
         block_index.update(block_name)

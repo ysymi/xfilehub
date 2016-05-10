@@ -29,12 +29,12 @@
 <script type="text/javascript">
     var BLOCK_SIZE = 4 * 1024 * 1024;
 
-    var percentage = document.getElementById("percentage");
+    var percentage = document.getElementById('percentage');
     var finishCount = 0;
     var totalCount = 0;
 
     function upload() {
-        var file = document.getElementById("file").files[0];
+        var file = document.getElementById('file').files[0];
         var blockCount = Math.ceil(file.size / BLOCK_SIZE);
         var blockGroupCount = Math.ceil(blockCount / 5);
         var blockGroupSize = blockGroupCount * BLOCK_SIZE;
@@ -42,23 +42,24 @@
         finishCount = 0;
         totalCount = blockCount;
 
-        console.log(file.size + " / " + blockGroupSize + " = " + blockCount);
+        console.log(file.size + ' / ' + blockGroupSize + ' = ' + blockCount + ' blocks');
         for (var i = 0; i < 5; ++i) {
             if (file.size < i * blockGroupSize) {
                 continue;
             }
 
-            var uploader = new Worker(" {{ static_url('uploader.js') }}");
+            var uploader = new Worker(' {{ static_url("uploader.js") }}');
             uploader.postMessage({
-                "data": file.slice(i * blockGroupSize, (i + 1) * blockGroupSize),
-                "seq": i * blockGroupCount,
-                "name": file.name
+                'wid': i,
+                'name': file.name,
+                'seq': i * blockGroupCount,
+                'data': file.slice(i * blockGroupSize, (i + 1) * blockGroupSize)
             });
 
             uploader.onmessage = function (message) {
                 if (message.data === 'success') {
                     finishCount += 1;
-                    percentage.innerHTML = (finishCount / totalCount * 100).toFixed(2) + "%";
+                    percentage.innerHTML = (finishCount / totalCount * 100).toFixed(2) + '%';
                     if (finishCount == totalCount) {
                         location.reload()
                     }
@@ -68,7 +69,7 @@
     }
 
     function init() {
-        percentage.innerHTML = "";
+        percentage.innerHTML = '';
     }
 </script>
 </html>

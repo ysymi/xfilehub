@@ -5,6 +5,7 @@ from tornado.web import RequestHandler
 
 from block.block import block_index
 from settings import STORAGE_DIR
+from util import util
 
 
 class DownloadHandler(RequestHandler):
@@ -14,11 +15,17 @@ class DownloadHandler(RequestHandler):
         self.set_header('Content-Disposition', 'attachment; filename=' + filename)
 
         blocks = sorted(block_index.get()[filename])
-
-        for block in blocks:
+        for block, md5 in blocks:
             block_path = os.path.join(STORAGE_DIR, block)
-            with open(block_path, "rb") as f:
-                self.write(f.read())
+            with open(block_path, 'rb') as f:
+                data = f.read()
+                logging.info("\ndownload:%s\n%s\n%s" % (filename, util.md5(data), md5))
+
+                if util.md5(data) == md5:
+                    self.write(data)
+                else:
+                    # todo error process
+                    pass
 
         self.finish()
         pass

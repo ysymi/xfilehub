@@ -1,16 +1,17 @@
 import logging
 
-import tornado.ioloop
 import tornado.web
+import tornado.ioloop
 
-from handler.download import DownloadHandler
 from handler.main import MainHandler
 from handler.upload import UploadHandler
+from handler.download import DownloadHandler
 from settings import PORT
 
 
 def make_app():
     settings = {
+        'gzip': True,
         'debug': True,
         'static_path': 'static/',
         'template_path': 'template/'

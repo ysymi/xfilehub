@@ -4,12 +4,21 @@ import os
 from tornado.web import RequestHandler
 
 from block.block import block_index
-from settings import STORAGE_DIR
+from config import STORAGE_DIR
 from util import util
 
 
 class UploadHandler(RequestHandler):
     def post(self):
+
+
+
+
+
+
+        # self.set_header()
+        return self.redirect('http://127.0.0.1:9000/upload', status=307)
+
         data = self.request.files['data'][0]['body']
         name = self.get_body_argument('name')
         md5 = self.get_body_argument('md5')

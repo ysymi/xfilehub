@@ -2,7 +2,7 @@ import json
 import logging
 import os
 
-from settings import BLOCKS_FILE, STORAGE_DIR
+from config import BLOCKS_FILE, STORAGE_DIR
 from util import util
 
 

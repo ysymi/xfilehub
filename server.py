@@ -6,7 +6,7 @@ import tornado.ioloop
 from handler.main import MainHandler
 from handler.upload import UploadHandler
 from handler.download import DownloadHandler
-from settings import PORT
+from config import PORT
 
 
 def make_app():

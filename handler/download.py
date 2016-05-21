@@ -4,13 +4,16 @@ import os
 from tornado.web import RequestHandler
 
 from block.block import block_index
-from settings import STORAGE_DIR
+from config import STORAGE_DIR
 from util import util
 
 
 class DownloadHandler(RequestHandler):
     def get(self):
+
         filename = self.get_argument('filename')
+        return self.redirect('http://127.0.0.1:9000/download/%s' % filename, status=307)
+
         self.set_header('Content-Type', 'application/octet-stream')
         self.set_header('Content-Disposition', 'attachment; filename=' + filename)
 

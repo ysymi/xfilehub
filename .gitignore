@@ -1,7 +1,7 @@
 *.pyc
 .idea/
 .DS_Store
-storage/
+storage/*.note
 __pycache__/
 test/
 block/block.index

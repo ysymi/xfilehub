@@ -45,7 +45,8 @@ onmessage = function (message) {
                 }
             }
         };
-        xhr.open('POST', '/upload', true);
+        var url = '/file/' + formData['name'];
+        xhr.open('POST', url, true);
         xhr.send(formData);
     }
 

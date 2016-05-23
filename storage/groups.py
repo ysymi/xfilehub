@@ -25,12 +25,14 @@ class Groups(object):
     def rebuild(self):
         for port in STORAGE_PORTS:
             if port_is_used(port):
-                info = do_request('info', STORAGE_HOST, port)  # TODO finish /info
+                info = do_request('/info', STORAGE_HOST, port, to_dict=True)  # TODO finish /info
+                logging.info(info)
                 group = {
-                    'name': str(port),
-                    'host': STORAGE_HOST,
-                    'master': info.masters,
-                    'slaves': info.slaves
+                    'name': info['name'],
+                    'host': info['host'],
+                    'port': info['port'],
+                    # 'master': info.masters,
+                    # 'slaves': info.slaves
                 }
                 self._groups.append(group)
         self.save()

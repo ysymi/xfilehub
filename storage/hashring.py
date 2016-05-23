@@ -1,4 +1,5 @@
 import hashlib
+import logging
 
 
 class HashRing(object):
@@ -11,33 +12,35 @@ class HashRing(object):
                 self.insert(group)
 
     def insert(self, group):
+
         for i in range(self._replica):
             virtual_group = "%s#%s" % (group, i)
-            key = self._gen_key(virtual_group)
-            self._group[key] = group
-            self._virtual_groups.append(key)
+            virtual_group_key = self._gen_key(virtual_group)
+            self._group[virtual_group_key] = group
+            self._virtual_groups.append(virtual_group_key)
+        logging.info('insert group : %s' % group)
         self._virtual_groups.sort()
 
     def remove(self, group):
         for i in range(self._replica):
             virtual_group = "%s#%s" % (group, i)
-            key = self._gen_key(virtual_group)
-            del self._group[key]
-            self._virtual_groups.remove(key)
+            virtual_group_key = self._gen_key(virtual_group)
+            del self._group[virtual_group_key]
+            self._virtual_groups.remove(virtual_group_key)
 
     def find(self, data):
         if self._virtual_groups:
             key = self._gen_key(data)
-            for group_key in self._virtual_groups:
-                if key <= group_key:
-                    return self._group[group_key]
+            for virtual_group_key in self._virtual_groups:
+                if key <= virtual_group_key:
+                    return self._group[virtual_group_key]
             return self._group[self._virtual_groups[0]]
         else:
             return None
 
     @staticmethod
     def _gen_key(data):
-        result = hashlib.md5(data).hexdigest()
+        result = hashlib.md5(data.encode('utf-8')).hexdigest()
         return int(result, 16)
 
 

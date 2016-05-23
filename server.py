@@ -5,7 +5,9 @@ import tornado.web
 
 from config import LOG_FORMAT
 from config import PORT
+
 from handler.file import FileHandler
+from handler.chunk import ChunkHandler
 from handler.files import FilesHandler
 from handler.groups import GroupsHandler
 from handler.main import MainHandler
@@ -24,7 +26,8 @@ def make_app():
         (r'/', MainHandler),
         (r'/files', FilesHandler),
         (r'/groups', GroupsHandler),
-        (r'/file/(?P<filename>.*', FileHandler),
+        (r'/chunk', ChunkHandler),
+        (r'/file/(?P<filename>.*)', FileHandler),
     ], **settings)
 
 
@@ -32,7 +35,7 @@ def init():
     logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
 
     for group in groups.get_all():
-        hashring.insert(group.name)
+        hashring.insert(group['name'])
 
 
 if __name__ == '__main__':

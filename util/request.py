@@ -1,10 +1,10 @@
-import logging
 import json
+import logging
 import urllib.parse
 import urllib.request
 
 
-def do_request(uri, host='localhost', port=80, to_dict=False ):
+def do_request(uri, host='localhost', port=80, to_dict=False):
     url = 'http://%s:%s%s' % (host, port, uri)
     logging.info('url: %s' % url)
     request = urllib.request.Request(url)

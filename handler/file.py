@@ -26,7 +26,7 @@ class FileHandler(RequestHandler):
         self.set_header('Content-Type', 'application/octet-stream')
         self.set_header('Content-Disposition', 'attachment; filename=' + filename)
 
-        chunks = files.get_chunks()  # TODO: get chunks (sort)
+        chunks = files.get_chunks(filename)  # TODO: get chunks (sort)
         for chunk in chunks:
             download_url = '/download/%s' % chunk.name
             data = do_request(download_url, chunk.host, chunk.port)

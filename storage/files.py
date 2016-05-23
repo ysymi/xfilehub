@@ -3,8 +3,8 @@ import logging
 import os
 
 from config import FILE_MAP_PATH
-from storage.groups import group_map
-from  util.request import do_request
+from storage.groups import groups
+from util.request import do_request
 
 
 class Files(object):
@@ -24,8 +24,7 @@ class Files(object):
             self._file_map = json.loads(f.read())
 
     def rebuild(self):
-        groups = group_map.get_all()
-        for group in groups:
+        for group in groups.get_all():
             chunks_part = do_request('chunks', group.host, group.port)
             # TODO: parse the chunks into file_map
 

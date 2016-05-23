@@ -7,7 +7,7 @@ from config import PORT
 from handler.download import DownloadHandler
 from handler.main import MainHandler
 from handler.upload import UploadHandler
-from storage.groups import get_groups
+from storage.groups import groups
 from storage.hashring import hashring
 
 from config import LOG_FORMAT
@@ -30,9 +30,9 @@ def make_app():
 def init():
     logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
 
-    groups = get_groups()
-    for group in groups:
+    for group in groups.get_all():
         hashring.insert(group.name)
+
 
 
 if __name__ == '__main__':

@@ -47,5 +47,14 @@ class Groups(object):
         })
         self.save()
 
+    def get(self, name):
+        for group in self._groups:
+            if group.name == name:
+                return group
+        return None
+
+    def get_all(self):
+        return self._groups
+
 
 groups = Groups()

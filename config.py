@@ -17,3 +17,4 @@ STORAGE_HOST = 'localhost'
 
 
 FILE_MAP_PATH = os.path.join(STORAGE_DIR, 'files')
+CHUNK_NAME_FORMAT = '%{name}s.#%{seq}s'

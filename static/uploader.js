@@ -45,7 +45,8 @@ onmessage = function (message) {
                 }
             }
         };
-        var url = '/file/' + formData['name'];
+        debugger
+        var url = '/file/' + formData.get('name');
         xhr.open('POST', url, true);
         xhr.send(formData);
     }

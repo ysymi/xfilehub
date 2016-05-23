@@ -5,8 +5,8 @@ from storage.groups import groups
 from storage.hashring import hashring
 
 
-class UploadHandler(RequestHandler):
-    def post(self):
+class FileHandler(RequestHandler):
+    def post(self, *args, **kwargs):
         name = self.get_body_argument('name')
         seq = self.get_body_argument('seq')
         chunk_name = CHUNK_NAME_FORMAT % (name, seq)
@@ -40,3 +40,28 @@ class UploadHandler(RequestHandler):
         #     self.write('ok')
         # else:
         #     self.write_error(400)
+
+    def get(self, *args, **kwargs):
+
+            filename = self.get_argument('filename')
+            return self.redirect('http://127.0.0.1:9000/download/%s' % filename, status=307)
+
+            self.set_header('Content-Type', 'application/octet-stream')
+            self.set_header('Content-Disposition', 'attachment; filename=' + filename)
+
+            blocks = sorted(block_index.get()[filename])
+            for block, md5 in blocks:
+                block_path = os.path.join(STORAGE_DIR, block)
+                with open(block_path, 'rb') as f:
+                    data = f.read()
+                    logging.info("\ndownload:%s\n%s\n%s" % (filename, util.md5(data), md5))
+
+                    if util.md5(data) == md5:
+                        self.write(data)
+                    else:
+                        # TODO error process
+                        pass
+
+            self.finish()
+            pass
+

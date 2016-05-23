@@ -4,9 +4,10 @@ import tornado.ioloop
 import tornado.web
 
 from config import PORT
-from handler.download import DownloadHandler
 from handler.main import MainHandler
-from handler.upload import UploadHandler
+from handler.file import FileHandler
+from handler.files import FilesHandler
+from handler.groups import GroupsHandler
 from storage.groups import groups
 from storage.hashring import hashring
 
@@ -22,8 +23,9 @@ def make_app():
     }
     return tornado.web.Application([
         (r'/', MainHandler),
-        (r'/upload', UploadHandler),
-        (r'/download', DownloadHandler),
+        (r'/files', FilesHandler),
+        (r'/groups', GroupsHandler),
+        (r'/file/.*', FileHandler),
     ], **settings)
 
 

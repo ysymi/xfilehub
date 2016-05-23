@@ -25,7 +25,7 @@ def make_app():
         (r'/', MainHandler),
         (r'/files', FilesHandler),
         (r'/groups', GroupsHandler),
-        (r'/file/.*', FileHandler),
+        (r'/file/(?P<filename>.*', FileHandler),
     ], **settings)
 
 

@@ -8,9 +8,9 @@ class HashRing(object):
         self._server = {}
         if servers:
             for server in servers:
-                self.add_server(server)
+                self.insert(server)
 
-    def add_server(self, server):
+    def insert(self, server):
         for i in range(self._replica):
             virtual_server = "%s#%s" % (server, i)
             key = self._gen_key(virtual_server)
@@ -18,14 +18,14 @@ class HashRing(object):
             self._virtual_servers.append(key)
         self._virtual_servers.sort()
 
-    def remove_server(self, server):
+    def remove(self, server):
         for i in range(self._replica):
             virtual_server = "%s#%s" % (server, i)
             key = self._gen_key(virtual_server)
             del self._server[key]
             self._virtual_servers.remove(key)
 
-    def get_server(self, key_str):
+    def find(self, key_str):
         if self._virtual_servers:
             key = self._gen_key(key_str)
             for server_key in self._virtual_servers:

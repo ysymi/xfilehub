@@ -27,7 +27,7 @@ class DownloadHandler(RequestHandler):
                 if util.md5(data) == md5:
                     self.write(data)
                 else:
-                    # todo error process
+                    # TODO error process
                     pass
 
         self.finish()

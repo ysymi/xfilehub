@@ -7,6 +7,7 @@ from block.block import block_index
 from config import STORAGE_DIR
 from util import util
 
+from storage.hashring import hashring
 
 class UploadHandler(RequestHandler):
     def post(self):

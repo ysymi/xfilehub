@@ -1,12 +1,16 @@
 import logging
 
-import tornado.web
 import tornado.ioloop
+import tornado.web
 
+from config import PORT
+from handler.download import DownloadHandler
 from handler.main import MainHandler
 from handler.upload import UploadHandler
-from handler.download import DownloadHandler
-from config import PORT
+from storage.groups import get_groups
+from storage.hashring import hashring
+
+from config import LOG_FORMAT
 
 
 def make_app():
@@ -23,8 +27,16 @@ def make_app():
     ], **settings)
 
 
+def init():
+    logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
+
+    groups = get_groups()
+    for group in groups:
+        hashring.insert(group.name)
+
+
 if __name__ == '__main__':
-    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+    init()
     app = make_app()
     app.listen(PORT)
     tornado.ioloop.IOLoop.current().start()

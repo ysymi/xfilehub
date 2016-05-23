@@ -3,7 +3,7 @@ import logging
 import os
 
 from config import CHUNK_NOTE_PATH
-from storage.node import get_nodes
+from storage.groups import get_nodes
 from util.request import do_request
 
 

@@ -9,9 +9,9 @@ from util.request import do_request
 
 class Files(object):
     def __init__(self):
-        self._file_map = []
+        self._files = []
         self.recovery()
-        if not self._file_map:
+        if not self._files:
             self.rebuild()
             self.save()
 
@@ -21,7 +21,7 @@ class Files(object):
             return
 
         with open(FILE_MAP_PATH, 'r') as f:
-            self._file_map = json.loads(f.read())
+            self._files = json.loads(f.read())
 
     def rebuild(self):
         for group in groups.get_all():
@@ -32,15 +32,20 @@ class Files(object):
 
     def save(self):
         with open(FILE_MAP_PATH, 'w') as f:
-            f.write(json.dumps(self._file_map, indent=2))
+            f.write(json.dumps(self._files, indent=2))
 
     # TODO: modify
     def insert(self, file_name, md5):
-        self._file_map.append({
+        self._files.append({
             'name': file_name,
             'md5': md5,
         })
         self.save()
+
+    def get_chunks(self, filename):
+        if filename in self._files:
+            return self._files[filename]
+        return None
 
 
 files = Files()

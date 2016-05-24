@@ -42,5 +42,5 @@ if __name__ == '__main__':
     init()
     app = make_app()
     app.listen(PORT)
-    logging.info('front end running at %s' % PORT)
+    logging.info('front server running at %s' % PORT)
     tornado.ioloop.IOLoop.current().start()

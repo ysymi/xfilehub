@@ -27,9 +27,7 @@ class Files(object):
 
     def check(self):
         # TODO check to file map same
-        pass
-
-    def rebuild(self):
+        online_files = {}
         for group in groups.get_all():
             chunks_part = do_request('/chunks', group['host'], group['port'], to_dict=True)
             logging.info('chunks_part')
@@ -41,7 +39,28 @@ class Files(object):
                 result = pat.match(chunk['name'])
                 if result:
                     filename = result.group(1)
-                    seq = int(result.group(2))
+                    seq = result.group(2)
+                    logging.info(filename)
+                    logging.info(type(seq))
+                    if filename not in self._files:
+                        online_files[filename] = {}
+                    online_files[filename][seq] = chunk
+        return len(online_files) == len(self._files)
+
+    def rebuild(self):
+        self._files = {}
+        for group in groups.get_all():
+            chunks_part = do_request('/chunks', group['host'], group['port'], to_dict=True)
+            logging.info('chunks_part')
+            logging.info(chunks_part)
+            chunks = chunks_part['chunks']
+            # TODO: parse the chunks into file_map
+            for chunk in chunks:
+                logging.info(chunk)
+                result = pat.match(chunk['name'])
+                if result:
+                    filename = result.group(1)
+                    seq = result.group(2)
                     logging.info(filename)
                     logging.info(type(seq))
                     if filename not in self._files:
@@ -70,6 +89,7 @@ class Files(object):
     def get_files(self):
 
         if not self.check():
+            logging.info('flies.not check , will rebuild')
             self.rebuild()
             self.save()
 

@@ -20,7 +20,7 @@
 <ul>
     {% for file in file_list %}
     <li>
-        <a href="/download?filename={{ escape(file) }}">{{ escape(file) }}</a>
+        <a href="/files/{{ escape(file) }}">{{ escape(file) }}</a>
     </li>
     {% end %}
 </ul>

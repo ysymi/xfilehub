@@ -35,10 +35,12 @@ def init():
 
     for group in groups.get_all():
         hashring.insert(group['name'])
+        logging.info('insert %s to hashring' % group['name'])
 
 
 if __name__ == '__main__':
     init()
     app = make_app()
     app.listen(PORT)
+    logging.info('front end running at %s' % PORT)
     tornado.ioloop.IOLoop.current().start()

@@ -1,5 +1,5 @@
 import logging
 
-from config import LOG_FORMAT
+from config import LOGGING_FORMAT
 
-logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
+logging.basicConfig(format=LOGGING_FORMAT, level=logging.INFO)

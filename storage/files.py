@@ -9,6 +9,7 @@ from util.request import do_request
 
 pat = re.compile(r'(.*).chunk(\d+)')
 
+
 class Files(object):
     def __init__(self):
         self._files = {}
@@ -25,7 +26,7 @@ class Files(object):
         with open(FILE_NOTE_PATH, 'r') as f:
             self._files = json.loads(f.read())
 
-    def check(self):   # TODO: reduce the cost
+    def check(self):  # TODO: reduce the cost
         # TODO check to file map same
         online_files = {}
         for group in groups.get_all():
@@ -71,14 +72,6 @@ class Files(object):
         with open(FILE_NOTE_PATH, 'w') as f:
             f.write(json.dumps(self._files, indent=2))
 
-    # # TODO: modify
-    # def insert(self, file_name, md5):
-    #     self._files.append({
-    #         'name': file_name,
-    #         'md5': md5,
-    #     })
-    #     self.save()
-
     def get_chunks(self, filename):
         if filename in self._files:
             chunks = self._files[filename]
@@ -87,8 +80,8 @@ class Files(object):
             return sorted_chunks
         return None
 
+    # TODO: reduce check (cost to much)
     def get_files(self):
-
         if not self.check():
             logging.info('flies.note not check , will rebuild')
             self.rebuild()

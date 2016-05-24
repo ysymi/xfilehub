@@ -1,5 +1,4 @@
 import hashlib
-import logging
 
 
 class HashRing(object):
@@ -12,13 +11,11 @@ class HashRing(object):
                 self.insert(group)
 
     def insert(self, group):
-
         for i in range(self._replica):
             virtual_group = "%s#%s" % (group, i)
             virtual_group_key = self._gen_key(virtual_group)
             self._group[virtual_group_key] = group
             self._virtual_groups.append(virtual_group_key)
-        logging.info('insert group : %s' % group)
         self._virtual_groups.sort()
 
     def remove(self, group):

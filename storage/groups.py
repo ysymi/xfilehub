@@ -27,7 +27,6 @@ class Groups(object):
         for port in STORAGE_PORTS:
             if port_is_used(port):
                 info = do_request('/info', STORAGE_HOST, port, to_dict=True)
-                 # logging.info(info)
                 group = {
                     'name': info['name'],
                     'host': info['host'],
@@ -44,7 +43,6 @@ class Groups(object):
         for port in STORAGE_PORTS:
             if port_is_used(port):
                 info = do_request('/info', STORAGE_HOST, port, to_dict=True)  # TODO finish /info
-                # logging.info(info)
                 group = {
                     'name': info['name'],
                     'host': info['host'],
@@ -74,7 +72,7 @@ class Groups(object):
         return None
 
     def get_all(self):
-        if not self.check():
+        if len(self._groups) == 0 or not self.check():
             self.rebuild()
             self.save()
         return self._groups

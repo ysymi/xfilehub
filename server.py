@@ -3,7 +3,7 @@ import logging
 import tornado.ioloop
 import tornado.web
 
-from config import LOG_FORMAT
+from config import LOGGING_FORMAT
 from config import PORT
 from handler.chunks import ChunksHandler
 from handler.file import FileHandler
@@ -31,7 +31,7 @@ def make_app():
 
 
 def init():
-    logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
+    logging.basicConfig(format=LOGGING_FORMAT, level=logging.INFO)
 
     for group in groups.get_all():
         hashring.insert(group['name'])

@@ -2,11 +2,12 @@ import hashlib
 import socket
 import logging
 from threading import Thread
+from config import LOGGING_FORMAT
 
 import pexpect
 
 
-def md5(data):
+def calc_md5(data):
     if isinstance(data, (str, bytes)):
         m = hashlib.md5()
         m.update(data)
@@ -50,6 +51,6 @@ def get_active_ips():
 
 
 def log_init():
-    logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+    logging.basicConfig(format=LOGGING_FORMAT, level=logging.INFO)
 
 

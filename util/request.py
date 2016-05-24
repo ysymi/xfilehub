@@ -5,8 +5,8 @@ import urllib.request
 
 
 def do_request(uri, host='localhost', port=80, is_file=False, to_dict=False):
-    uri = urllib.parse.quote(uri)
-    url = u'http://%s:%s%s' % (host, port, uri)
+    uri = urllib.parse.quote(uri)  # for chinese character
+    url = 'http://%s:%s%s' % (host, port, uri)
     request = urllib.request.Request(url)
     try:
         response = urllib.request.urlopen(request)

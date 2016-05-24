@@ -5,5 +5,5 @@ from tornado.web import RequestHandler
 
 class MainHandler(RequestHandler):
     def get(self):
-        logging.info('/ is called redirect now')
+        logging.info('/ is called, redirect now')
         self.redirect('/files')

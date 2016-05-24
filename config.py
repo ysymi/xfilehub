@@ -11,5 +11,5 @@ GROUPS_NOTE_PATH = os.path.join(STORAGE_DIR, 'groups.note')
 STORAGE_HOST = 'localhost'
 STORAGE_PORTS = list(range(8000, 8010))
 
-LOG_FORMAT = '%(asctime)s %(levelname)s %(message)s'
+LOGGING_FORMAT = '%(asctime)s %(levelname)s %(message)s'
 CHUNK_NAME_FORMAT = '{filename}.chunk{seq:0>3}'

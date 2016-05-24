@@ -11,7 +11,7 @@ class Groups(object):
     def __init__(self):
         self._groups = []
         self.recovery()
-        if not self._groups:
+        if self._groups or not self.check():
             self.rebuild()
             self.save()
 
@@ -21,6 +21,22 @@ class Groups(object):
             return
         with open(GROUPS_NOTE_PATH, 'r') as f:
             self._groups = json.loads(f.read())
+
+    def check(self):  # TODO reduce replica
+        online_groups = []
+        for port in STORAGE_PORTS:
+            if port_is_used(port):
+                info = do_request('/info', STORAGE_HOST, port, to_dict=True)
+                logging.info(info)
+                group = {
+                    'name': info['name'],
+                    'host': info['host'],
+                    'port': info['port'],
+                    # 'master': info.masters,
+                    # 'slaves': info.slaves
+                }
+                online_groups.append(group)
+        return len(self._groups) == len(online_groups)
 
     def rebuild(self):
         for port in STORAGE_PORTS:
@@ -51,7 +67,7 @@ class Groups(object):
 
     def get(self, name):
         for group in self._groups:
-            if group.name == name:
+            if group['name'] == name:
                 return group
         return None
 

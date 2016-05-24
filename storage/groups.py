@@ -36,9 +36,11 @@ class Groups(object):
                     # 'slaves': info.slaves
                 }
                 online_groups.append(group)
+        logging.info('online groups : %s  self.grups: %s' % (len(online_groups), len(self._groups)))
         return len(self._groups) == len(online_groups)
 
     def rebuild(self):
+        self._groups = []
         for port in STORAGE_PORTS:
             if port_is_used(port):
                 info = do_request('/info', STORAGE_HOST, port, to_dict=True)  # TODO finish /info
@@ -72,6 +74,9 @@ class Groups(object):
         return None
 
     def get_all(self):
+        if not self.check():
+            self.rebuild()
+            self.save()
         return self._groups
 
 

@@ -12,4 +12,4 @@ STORAGE_HOST = 'localhost'
 STORAGE_PORTS = list(range(8000, 8010))
 
 LOG_FORMAT = '%(asctime)s %(levelname)s %(message)s'
-CHUNK_NAME_FORMAT = '%(name)s.#%(seq)s'
+CHUNK_NAME_FORMAT = '{filename}.chunk{seq:0>3}'

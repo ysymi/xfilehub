@@ -11,7 +11,7 @@ class ChunksHandler(RequestHandler):
     def post(self):
         name = self.get_body_argument('name')
         seq = self.get_body_argument('seq')
-        chunk_name = CHUNK_NAME_FORMAT.format(name=name, seq=seq)
+        chunk_name = CHUNK_NAME_FORMAT.format(filename=name, seq=seq)
 
         logging.info('get chunk: %s' % chunk_name)
         group_name = hashring.find(chunk_name)

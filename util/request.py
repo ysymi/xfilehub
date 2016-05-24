@@ -4,14 +4,15 @@ import urllib.parse
 import urllib.request
 
 
-def do_request(uri, host='localhost', port=80, to_dict=False):
-    url = 'http://%s:%s%s' % (host, port, uri)
-    logging.info('url: %s' % url)
+def do_request(uri, host='localhost', port=80, is_file=False, to_dict=False):
+    uri = urllib.parse.quote(uri)
+    url = u'http://%s:%s%s' % (host, port, uri)
     request = urllib.request.Request(url)
     try:
         response = urllib.request.urlopen(request)
-        response = response.read().decode('utf-8')
-        logging.info(response)
+        response = response.read()
+        if not is_file:
+            response = response.decode('utf-8')
         if to_dict:
             response = json.loads(response)
 

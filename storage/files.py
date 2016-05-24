@@ -81,7 +81,10 @@ class Files(object):
 
     def get_chunks(self, filename):
         if filename in self._files:
-            return self._files[filename]
+            chunks = self._files[filename]
+            sorted_chunks = sorted(chunks.items(), key=lambda d: d[0])
+            # logging.info(sorted_chunks)
+            return sorted_chunks
         return None
 
     def get_files(self):

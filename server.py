@@ -5,9 +5,8 @@ import tornado.web
 
 from config import LOG_FORMAT
 from config import PORT
-
+from handler.chunks import ChunksHandler
 from handler.file import FileHandler
-from handler.chunk import ChunkHandler
 from handler.files import FilesHandler
 from handler.groups import GroupsHandler
 from handler.main import MainHandler
@@ -24,10 +23,10 @@ def make_app():
     }
     return tornado.web.Application([
         (r'/', MainHandler),
+        (r'/chunks', ChunksHandler),
         (r'/files', FilesHandler),
+        (r'/files/(?P<filename>.*)', FileHandler),
         (r'/groups', GroupsHandler),
-        (r'/chunk', ChunkHandler),
-        (r'/file/(?P<filename>.*)', FileHandler),
     ], **settings)
 
 

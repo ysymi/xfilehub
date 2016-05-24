@@ -7,13 +7,13 @@ from config import FILE_NOTE_PATH
 from storage.groups import groups
 from util.request import do_request
 
-pat = re.compile(r'(.*).#(\d+)')
+pat = re.compile(r'(.*).chunk(\d+)')
 
 class Files(object):
     def __init__(self):
         self._files = {}
         self.recovery()
-        if self._files or not self.check():
+        if not self._files or not self.check():
             self.rebuild()
             self.save()
 
@@ -25,13 +25,11 @@ class Files(object):
         with open(FILE_NOTE_PATH, 'r') as f:
             self._files = json.loads(f.read())
 
-    def check(self):
+    def check(self):   # TODO: reduce the cost
         # TODO check to file map same
         online_files = {}
         for group in groups.get_all():
             chunks_part = do_request('/chunks', group['host'], group['port'], to_dict=True)
-            logging.info('chunks_part')
-            logging.info(chunks_part)
             chunks = chunks_part['chunks']
             # TODO: parse the chunks into file_map
             for chunk in chunks:
@@ -42,7 +40,7 @@ class Files(object):
                     seq = result.group(2)
                     logging.info(filename)
                     logging.info(type(seq))
-                    if filename not in self._files:
+                    if filename not in online_files:
                         online_files[filename] = {}
                     online_files[filename][seq] = chunk
         return len(online_files) == len(self._files)
@@ -89,7 +87,7 @@ class Files(object):
     def get_files(self):
 
         if not self.check():
-            logging.info('flies.not check , will rebuild')
+            logging.info('flies.note not check , will rebuild')
             self.rebuild()
             self.save()
 

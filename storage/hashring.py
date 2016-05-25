@@ -35,6 +35,9 @@ class HashRing(object):
         else:
             return None
 
+    def size(self):
+        return len(self._virtual_groups) // self._replica
+
     @staticmethod
     def _gen_key(data):
         result = hashlib.md5(data.encode('utf-8')).hexdigest()

@@ -73,6 +73,7 @@ class Groups(object):
 
     def get_all(self):
         if len(self._groups) == 0 or not self.check():
+            logging.info('will rebuild groups')
             self.rebuild()
             self.save()
         return self._groups

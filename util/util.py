@@ -2,7 +2,7 @@ import hashlib
 import socket
 import logging
 from threading import Thread
-from config import LOGGING_FORMAT
+from config import LOGGING_FORMAT, STORAGE_HOST
 
 import pexpect
 
@@ -26,7 +26,7 @@ def ip_is_active(ip):
     return check == 1
 
 
-def port_is_used(port, host='localhost'):
+def port_is_used(port, host=STORAGE_HOST):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         s.connect((host, port))

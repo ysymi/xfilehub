@@ -1,4 +1,5 @@
 import logging
+import time
 
 import tornado.ioloop
 import tornado.web
@@ -33,14 +34,19 @@ def make_app():
 def init():
     logging.basicConfig(format=LOGGING_FORMAT, level=logging.INFO)
 
-    for group in groups.get_all():
-        hashring.insert(group['name'])
-        logging.info('insert %s to hashring' % group['name'])
+    while hashring.size() == 0:
+        logging.info('try to collect groups')
+        for group in groups.get_all():
+            hashring.insert(group['name'])
+            logging.info('insert %s to hashring' % group['name'])
+        time.sleep(0.5)
+
+    logging.info('haring has %s group' % hashring.size())
 
 
 if __name__ == '__main__':
-    init()
     app = make_app()
     app.listen(PORT)
+    init()
     logging.info('front server running at %s' % PORT)
     tornado.ioloop.IOLoop.current().start()

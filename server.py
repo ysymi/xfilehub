@@ -34,7 +34,7 @@ def make_app():
 def init():
     logging.basicConfig(format=LOGGING_FORMAT, level=logging.INFO)
 
-    while hashring.size() == 0:
+    while hashring.size() == 0 and hashring.size() != 10:
         logging.info('try to collect groups')
         for group in groups.get_all():
             hashring.insert(group['name'])

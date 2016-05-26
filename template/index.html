@@ -22,8 +22,9 @@
     </div>
 
     <div class="files">
+        <input id="search" type="text" placeholder="Search...">
         <p>Here is your file:</p>
-        <ul>
+        <ul id="files-list">
             {% for file in file_list %}
             <li class="item">
                 <a href="/files/{{ escape(file) }}">{{ escape(file) }}</a>
@@ -78,5 +79,23 @@
     function init() {
         percentage.innerHTML = '';
     }
+</script>
+<script src="{{ static_url('jquery-2.1.1.min.js') }}"></script>
+<script src="{{ static_url('jquery.easysearch.js') }}"></script>
+<script>
+    $('#search').jSearch({
+        selector: 'ul',
+        child: 'li a',
+        minValLength: 0,
+        Found: function (elem, event) {
+            $(elem).parent().show();
+        },
+        NotFound: function (elem, event) {
+            $(elem).parent().hide();
+        },
+        After: function (t) {
+            if (!t.val().length) $('ul li').show();
+        }
+    });
 </script>
 </html>

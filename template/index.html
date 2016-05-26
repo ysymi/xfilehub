@@ -3,28 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>X File Hub</title>
+    <link rel="stylesheet" type="text/css" href=" {{ static_url('index.css') }}">
     <link rel="shortcut icon" href="{{ static_url('favicon.ico') }}">
 </head>
 <body>
-<h1>X File Hub</h1>
+<div class="container">
 
-<form id="file-uploader" method="post" action="javascript:upload()">
-    <p>Upload new file:</p>
-    <p>
-        <input id="file" type="file" onchange="javascript:init()"/>
-        <input type="submit" value="submit"/>
-        <span id="percentage"></span>
-    </p>
-</form>
-<p>Here is your file:</p>
-<ul>
-    {% for file in file_list %}
-    <li>
-        <a href="/files/{{ escape(file) }}">{{ escape(file) }}</a>
-    </li>
-    {% end %}
-</ul>
+    <h1>X File Hub</h1>
+    <div class="upload">
+        <form id="file-uploader" method="post" action="javascript:upload()">
+            <p>Upload new file:</p>
+            <p>
+                <input id="file" type="file" onchange="javascript:init()"/>
+                <input type="submit" value="submit"/>
+                <span id="percentage"></span>
+            </p>
+        </form>
+    </div>
 
+    <div class="files">
+        <p>Here is your file:</p>
+        <ul>
+            {% for file in file_list %}
+            <li class="item">
+                <a href="/files/{{ escape(file) }}">{{ escape(file) }}</a>
+            </li>
+            {% end %}
+        </ul>
+    </div>
+</div>
 </body>
 <script type="text/javascript">
     var BLOCK_SIZE = 4 * 1024 * 1024;

@@ -30,11 +30,11 @@ onmessage = function (message) {
             formData.append('data', data);
 
             console.log('send: ' + name + ' seq: ' + seq + '\tmd5: ' + md5(fileReader.result));
-            _send(formData);
+            ajaxSend(formData);
         };
     }
 
-    function _send(formData) {
+    function ajaxSend(formData) {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             var DONE = 4;

@@ -60,6 +60,7 @@
             uploader.postMessage({
                 'wid': i,
                 'name': file.name,
+                'tot': blockCount,
                 'seq': i * blockGroupCount,
                 'data': file.slice(i * blockGroupSize, (i + 1) * blockGroupSize)
             });

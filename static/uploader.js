@@ -9,13 +9,14 @@ onmessage = function (message) {
 
     for (var i = 0; i < blockCount; ++i) {
         var name = obj.name;
+        var tot = obj.tot;
         var seq = i + obj.seq;
         var data = obj.data.slice(i * BLOCK_SIZE, (i + 1) * BLOCK_SIZE);
-        send(data, name, seq);
+        send(data, name, seq, tot);
     }
 
 
-    function send(data, name, seq) {
+    function send(data, name, seq, tot) {
 
         var fileReader = new FileReader();
         fileReader.readAsBinaryString(data);
@@ -23,6 +24,7 @@ onmessage = function (message) {
 
             var formData = new FormData();
             formData.append('md5', md5(fileReader.result));
+            formData.append('tot', tot);
             formData.append('seq', seq);
             formData.append('name', name);
             formData.append('data', data);

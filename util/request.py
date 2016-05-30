@@ -4,12 +4,12 @@ import urllib.parse
 import urllib.request
 
 
-def do_request(uri, host='localhost', port=80, is_file=False, to_dict=False):
+def do_request(uri, host='localhost', port=80, is_file=False, to_dict=False, timeout=1):
     uri = urllib.parse.quote(uri)  # for chinese character
     url = 'http://%s:%s%s' % (host, port, uri)
     request = urllib.request.Request(url)
     try:
-        response = urllib.request.urlopen(request)
+        response = urllib.request.urlopen(request, timeout=timeout)
         response = response.read()
         if not is_file:
             response = response.decode('utf-8')

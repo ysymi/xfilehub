@@ -10,7 +10,7 @@ FILE_NOTE_PATH = os.path.join(STORAGE_DIR, 'files.note')
 GROUPS_NOTE_PATH = os.path.join(STORAGE_DIR, 'groups.note')
 
 GET_IP_CMD = 'ifconfig| grep 192.168 | awk \'{print $2}\''
-STORAGE_HOST = os.popen(GET_IP_CMD).read().strip()  # TODO: ready for no network environment
+STORAGE_HOST = os.popen(GET_IP_CMD).read().strip() or 'localhost'  # TODO: ready for no network environment
 STORAGE_PORTS = list(range(8000, 8010))
 
 LOGGING_FORMAT = '%(asctime)s %(levelname)s %(message)s'

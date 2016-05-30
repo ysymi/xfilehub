@@ -22,14 +22,15 @@ onmessage = function (message) {
         fileReader.readAsBinaryString(data);
         fileReader.onloadend = function () {
 
+            var md5 = md5Sum(fileReader.result);
             var formData = new FormData();
-            formData.append('md5', md5(fileReader.result));
+            formData.append('md5', md5);
             formData.append('tot', tot);
             formData.append('seq', seq);
             formData.append('name', name);
             formData.append('data', data);
 
-            console.log('send: ' + name + ' seq: ' + seq + '\tmd5: ' + md5(fileReader.result));
+            console.log('send: ' + name + ' seq: ' + seq + '\tmd5: ' + md5);
             ajaxSend(formData);
         };
     }
@@ -51,7 +52,7 @@ onmessage = function (message) {
         xhr.send(formData);
     }
 
-    function md5(binaryString) {
+    function md5Sum(binaryString) {
         return new SparkMD5().appendBinary(binaryString).end();
     }
 

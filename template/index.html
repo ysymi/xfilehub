@@ -22,8 +22,10 @@
     </div>
 
     <div class="files">
-        <input id="search" type="text" placeholder="Search...">
-        <p>Here is your file:</p>
+        <div class="desc-wrap">
+            <span class="desc">Here is your file:</span>
+            <input id="search" type="text" placeholder="Search your file..." class="search-input">
+        </div>
         <ul id="files-list">
             {% for file in file_list %}
             <li class="item">

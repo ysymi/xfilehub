@@ -29,6 +29,7 @@ class Files(object):
     def check(self):  # TODO: reduce the cost
         # TODO check to file map same
         online_files = {}
+        logging.info('check the files.note')
         for group in groups.get_all():
             chunks_part = do_request('/chunks', group['host'], group['port'], to_dict=True)
             chunks = chunks_part['chunks']
@@ -82,12 +83,19 @@ class Files(object):
 
     # TODO: reduce check (cost to much)
     def get_files(self):
+        logging.info('try to get all files')
         if not self.check():
             logging.info('flies.note not check , will rebuild')
             self.rebuild()
             self.save()
 
-        return list(self._files.keys())
+        return sorted(list(self._files.keys()), key=str.lower)
+
+    def add_file(self):
+        pass
+
+    def remove_file(self):
+        pass
 
 
 files = Files()

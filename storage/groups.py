@@ -23,6 +23,7 @@ class Groups(object):
             self._groups = json.loads(f.read())
 
     def check(self):  # TODO reduce replica
+        logging.info('check groups now')
         online_groups = []
         for port in STORAGE_PORTS:
             if port_is_used(port):
@@ -72,6 +73,7 @@ class Groups(object):
         return None
 
     def get_all(self):
+        logging.info('get all groups')
         if len(self._groups) == 0 or not self.check():
             logging.info('will rebuild groups')
             self.rebuild()

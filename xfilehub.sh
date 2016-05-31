@@ -30,6 +30,7 @@ function start()
     do
         PORT=${port} python3.5 /Users/fengfei/graduation/xfilehub-stroage/server.py &
     done
+    sleep 1s
     python3.5 /Users/fengfei/graduation/xfilehub/server.py &
 }
 

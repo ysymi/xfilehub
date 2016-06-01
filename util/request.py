@@ -4,7 +4,7 @@ import urllib.parse
 import urllib.request
 
 
-def do_request(uri, host='localhost', port=80, is_file=False, to_dict=False, timeout=1):
+def do_request(uri, host='localhost', port=80, is_file=False, to_dict=False, timeout=2):
     uri = urllib.parse.quote(uri)  # for chinese character
     url = 'http://%s:%s%s' % (host, port, uri)
     request = urllib.request.Request(url)

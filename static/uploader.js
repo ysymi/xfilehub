@@ -5,13 +5,14 @@ var BLOCK_SIZE = 4 * 1024 * 1024;
 onmessage = function (message) {
     var obj = message.data;
     var blockCount = Math.ceil(obj.data.size / BLOCK_SIZE);
-    console.log('for worker' + obj.wid + ' will send ' + blockCount + ' blocks');
+    console.log('worker' + obj.wid + ' will send ' + blockCount + ' blocks');
 
     for (var i = 0; i < blockCount; ++i) {
         var name = obj.name;
         var tot = obj.tot;
         var seq = i + obj.seq;
         var data = obj.data.slice(i * BLOCK_SIZE, (i + 1) * BLOCK_SIZE);
+        console.log('worker' + obj.wid + ' will send ' + seq);
         send(data, name, seq, tot);
     }
 
@@ -37,19 +38,26 @@ onmessage = function (message) {
 
     function ajaxSend(formData) {
         var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            var DONE = 4;
-            var OK = 200;
-            if (xhr.readyState === DONE) {
-                if (xhr.status === OK) {
-                    postMessage('success');
-                } else {
-                    postMessage('failure');
-                }
-            }
-        };
+
+        // var last = 0;
+        // xhr.upload.onprogress = function (event) {
+        //     if (event.lengthComputable) {
+        //         var sent = event.loaded - last;
+        //
+        //         postMessage('sent:' + sent);
+        //         postMessage(sent);
+        //
+        //     }
+        // };
+
+        var startTime = new Date().getTime();
         xhr.open('POST', '/chunks', true);
         xhr.send(formData);
+        xhr.onload = function () {
+            var endTime = new Date().getTime();
+            console.log('sent chunk' + formData.get('seq') + ' use ' + (endTime - startTime) + 'ms');
+            postMessage('success');
+        };
     }
 
     function md5Sum(binaryString) {

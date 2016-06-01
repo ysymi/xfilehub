@@ -35,7 +35,7 @@ def init():
     logging.basicConfig(format=LOGGING_FORMAT, level=logging.INFO)
 
     while hashring.size() != 10:
-        logging.info('try to collect groups')
+        logging.info('try to insert groups to hashring')
         for group_name, group_info in groups.get_all().items():
             hashring.insert(group_name)
             logging.info('insert %s to hashring' % group_name)

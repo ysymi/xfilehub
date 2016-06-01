@@ -20,7 +20,7 @@ def make_app():
         'gzip': True,
         'debug': True,
         'static_path': 'static/',
-        'template_path': 'template/'
+        'template_path': 'template/'  # todo: Bug : fix bug cwd not xfilehub
     }
     return tornado.web.Application([
         (r'/', MainHandler),
@@ -36,9 +36,9 @@ def init():
 
     while hashring.size() != 10:
         logging.info('try to collect groups')
-        for group in groups.get_all():
-            hashring.insert(group['name'])
-            logging.info('insert %s to hashring' % group['name'])
+        for group_name, group_info in groups.get_all().items():
+            hashring.insert(group_name)
+            logging.info('insert %s to hashring' % group_name)
         time.sleep(0.5)
 
     logging.info('haring has %s group' % hashring.size())

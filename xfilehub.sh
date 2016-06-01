@@ -2,19 +2,18 @@
 
 function clear()
 {
-    for port in $(seq 8000 8009)
-    do
-        rm -f /Users/fengfei/graduation/xfilehub-stroage/storages/storage\#${port}/chunks/*
-        rm -f /Users/fengfei/graduation/xfilehub-stroage/storages/storage\#${port}/*.note
+    cd /Users/fengfei/graduation/
+    for port in $(seq 8000 8009) ; do
+        rm -f ./xfilehub-stroage/storages/storage\#${port}/chunks/*
+        rm -f ./xfilehub-stroage/storages/storage\#${port}/*.note
     done
-    rm -f /Users/fengfei/graduation/xfilehub/storage/*.note
-    tree -L 2 /Users/fengfei/graduation/xfilehub-stroage/storages/
+    rm -f ./xfilehub/storage/*.note
+    tree -L 2 ./xfilehub-stroage/storages/
 }
 
 function stop()
 {
-    for port in $(seq 8000 8009)
-    do
+    for port in $(seq 8000 8009) ; do
         kill -9 $(lsof -i:${port} | awk '{print $2}' | tail -n 2)
     done
     lsof -nPi TCP -s TCP:LISTEN | grep 127.0.0.1:80 | grep 4u | sort -k 8
@@ -26,33 +25,29 @@ function stop()
 function start()
 {
     echo
-    for port in $(seq 8000 8009)
-    do
-        PORT=${port} python3.5 /Users/fengfei/graduation/xfilehub-stroage/server.py &
+    cd /Users/fengfei/graduation/xfilehub-stroage/
+    for port in $(seq 8000 8009) ; do
+        PORT=${port} python3.5 ./server.py &
     done
     sleep 1s
-    python3.5 /Users/fengfei/graduation/xfilehub/server.py &
+    cd /Users/fengfei/graduation/xfilehub/
+    python3.5 ./server.py &
 }
 
 
 if [ -n $1 ] ; then
     echo operation is $1
     case $1 in
-    clean)
-        clear
-        ;;
+    clear)
+        clear ;;
     stop)
-        stop
-        ;;
+        stop ;;
     start)
-        start
-        ;;
+        start ;;
     restart)
-        stop && start
-        ;;
+        stop && start ;;
     reset)
-        clear && stop && start
-        ;;
+        clear && stop && start ;;
     esac
 fi
 

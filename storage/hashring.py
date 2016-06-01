@@ -2,7 +2,7 @@ import hashlib
 
 
 class HashRing(object):
-    def __init__(self, groups=None, replica=3):
+    def __init__(self, groups=None, replica=100):
         self._replica = replica
         self._virtual_groups = []
         self._group = {}
